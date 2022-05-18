@@ -52,7 +52,7 @@ for (var word : words) {
     if (word.isEmpty()) {
         continue;
     }
-    freqs.put(word.toLowerCase(), freqs.getOrDefault(word, 0) + 1);
+    freqs.put(word.toLowerCase(), freqs.getOrDefault(word.toLowerCase(), 0) + 1);
 }
 ```
 

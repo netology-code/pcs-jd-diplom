@@ -66,6 +66,27 @@ for (var word : words) {
 ## Сервер
 После завершения работы над движком, вам следует написать сервер по примеру того, как вы уже делали в предыдущих заданиях. В `main` должен запускаться сервер, слушающий порт `8989`, к которому будут происходить подключения и на входной поток подавать одно слово (обозначим как `word`), отвечать результатом вызова метода `search(word)`, но в виде JSON-текста (библиотеку для работы с JSON подключите к `pom.xml`).
 
+<details>
+  <summary>Напоминалка как выглядит простой сервер</summary>
+  
+  ```java
+        try (ServerSocket serverSocket = new ServerSocket(8989);) { // стартуем сервер один(!) раз
+            while (true) { // в цикле(!) принимаем подключения
+                try (
+                        Socket socket = serverSocket.accept();
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        PrintWriter out = new PrintWriter(socket.getOutputStream());
+                    ) {
+                    // обработка одного подключения
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Не могу стартовать сервер");
+            e.printStackTrace();
+        }
+  ```
+</details>
+
 Пример ответа на запрос `бизнес`:
 ```json
 [

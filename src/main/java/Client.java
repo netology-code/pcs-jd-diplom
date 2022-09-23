@@ -35,19 +35,24 @@ public class Client {
     }
 
     public static String jsonToString(String string) {
-        String s = "такого слова нет";
-        if (string != null) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                Object jsonObject = mapper.readValue(string, Object.class);
-                new TypeReference<HashMap<String, Object>>() {
-                };
-                s = mapper.writerWithDefaultPrettyPrinter()
-                        .writeValueAsString(jsonObject);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+        if (string.equals("null"))
+            return "такого слова нет";
+
+        String s = "";
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            Object jsonObject = mapper.readValue(string, Object.class);
+            new TypeReference<HashMap<String, Object>>() {
+            };
+            s = mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(jsonObject);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
         return s;
     }
 }

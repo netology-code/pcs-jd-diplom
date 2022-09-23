@@ -9,13 +9,10 @@ import java.util.stream.Collectors;
 
 public class BooleanSearchEngine implements SearchEngine {
 
-    PageEntry pageEntry;
-
     private String fileName;
 
-    Map<String, List<PageEntry>> pageEntryMap = new HashMap<>();
+    private final Map<String, List<PageEntry>> pageEntryMap = new HashMap<>();
 
-    List<String> sort;
 
     public BooleanSearchEngine(File pdfsDir) throws IOException {
         // прочтите тут все pdf и сохраните нужные данные,
@@ -32,8 +29,7 @@ public class BooleanSearchEngine implements SearchEngine {
 
                 String text = PdfTextExtractor.getTextFromPage(pdfDocument.getPage(i));
                 String[] word = text.split("\\P{IsAlphabetic}+");
-
-                sort = Arrays.stream(word)
+                List<String> sort = Arrays.stream(word)
                         .map(String::toLowerCase)
                         .sorted()
                         .collect(Collectors.toList());
@@ -42,18 +38,18 @@ public class BooleanSearchEngine implements SearchEngine {
 
                 String key = sort.get(0);
 
-                for (int ii = 0; ii < sort.size(); ii++) {
+                for (int j = 0; j < sort.size(); j++) {
 
                     count++;
-                    if (sort.get(ii).equals(key)) {
-                        if (ii == sort.size() - 1) {
+                    if (sort.get(j).equals(key)) {
+                        if (j == sort.size() - 1) {
                             count++;
                             pageEntryMapPut(i, count, key);
                         }
                         continue;
                     } else {
                         pageEntryMapPut(i, count, key);
-                        key = sort.get(ii);
+                        key = sort.get(j);
                     }
                     count = 0;
                 }
@@ -67,15 +63,12 @@ public class BooleanSearchEngine implements SearchEngine {
 
         List<PageEntry> l = pageEntryMap.get(word.toLowerCase());
 
-        if (l == null) {
-            System.out.println("такого слова нет");
-        }
         return l;
     }
 
     public Map<String, List<PageEntry>> pageEntryMapPut(int i, int count, String key) {
 
-        pageEntry = new PageEntry(fileName, i, count);
+        PageEntry pageEntry = new PageEntry(fileName, i, count);
 
         List<PageEntry> pageEntryList;
 
@@ -89,6 +82,4 @@ public class BooleanSearchEngine implements SearchEngine {
         pageEntryMap.put(key, pageEntryList);
         return pageEntryMap;
     }
-
-
 }
